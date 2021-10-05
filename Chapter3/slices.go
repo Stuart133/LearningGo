@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 func main() {
-	slicingTest()
+	tripleNotation()
 }
 
 func inspectSlice(slice []string) {
@@ -11,6 +11,16 @@ func inspectSlice(slice []string) {
 	for i := range slice {
 		fmt.Printf("[%d] %p %s\n", i, &slice[i], slice[i])
 	}
+}
+
+func tripleNotation() {
+	slice1 := []string{"A", "B", "C", "D", "E"}
+	slice2 := slice1[2:4:4] // The third value controls the slice capacity. As it ends up being 2, a new backing array is created when we try and append
+
+	slice2 = append(slice2, "CHANGED")
+
+	inspectSlice(slice1)
+	inspectSlice(slice2)
 }
 
 func slicingTest() {
