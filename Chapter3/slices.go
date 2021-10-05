@@ -3,6 +3,25 @@ package main
 import "fmt"
 
 func main() {
+	slicingTest()
+}
+
+func inspectSlice(slice []string) {
+	fmt.Printf("Length[%d] Capacity[%d]\n", len(slice), cap(slice))
+	for i := range slice {
+		fmt.Printf("[%d] %p %s\n", i, &slice[i], slice[i])
+	}
+}
+
+func slicingTest() {
+	slice1 := []string{"A", "B", "C", "D", "E"}
+	slice2 := slice1[2:4]
+
+	inspectSlice(slice1)
+	inspectSlice(slice2)
+}
+
+func overwriteSliceTest() {
 	slice := make([]string, 5, 8)
 	slice[0] = "Apple"
 	slice[1] = "Orange"
@@ -21,11 +40,4 @@ func main() {
 
 	inspectSlice(slice)
 	inspectSlice(slice2)
-}
-
-func inspectSlice(slice []string) {
-	fmt.Printf("Length[%d] Capacity[%d]\n", len(slice), cap(slice))
-	for i := range slice {
-		fmt.Printf("[%d] %p %s\n", i, &slice[i], slice[i])
-	}
 }
