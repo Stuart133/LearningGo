@@ -17,6 +17,8 @@ func slicingTest() {
 	slice1 := []string{"A", "B", "C", "D", "E"}
 	slice2 := slice1[2:4]
 
+	slice2[0] = "CHANGED"
+
 	inspectSlice(slice1)
 	inspectSlice(slice2)
 }
