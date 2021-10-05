@@ -16,6 +16,11 @@ func main() {
 	slice2[5] = "Test"
 
 	inspectSlice(slice2)
+
+	slice = append(slice, "NewValue")
+
+	inspectSlice(slice)
+	inspectSlice(slice2)
 }
 
 func inspectSlice(slice []string) {
