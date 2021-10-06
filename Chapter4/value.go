@@ -23,4 +23,9 @@ func main() {
 	f1()
 	d.name = "Joan"
 	f1()
+
+	f2 := d.setAge
+	f2(45)
+	d.name = "Sunny"
+	f2(50)
 }
