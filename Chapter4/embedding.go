@@ -15,6 +15,10 @@ type notifier interface {
 	notify()
 }
 
+func sendNotification(n notifier) {
+	n.notify()
+}
+
 type admin struct {
 	person user // Not embedding
 	level  string
@@ -39,6 +43,7 @@ func main() {
 		level: "super",
 	}
 
+	sendNotification(ad)
 	ad.user.notify()
 	ad.notify()
 }
