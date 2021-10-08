@@ -22,7 +22,7 @@ func (e *epson) print() {
 	fmt.Printf("Printer Name: %s\n", e.name)
 }
 
-func main() {
+func semantics() {
 	c := canon{"PIXMA TR4520"}
 	e := epson{"WorkForce Pro WF-3720"}
 
