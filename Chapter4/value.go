@@ -16,7 +16,7 @@ func (d *data) setAge(age int) {
 	fmt.Println(d.name, "Is age", d.age)
 }
 
-func main() {
+func value() {
 	d := data{name: "Bill"}
 
 	f1 := d.displayName
