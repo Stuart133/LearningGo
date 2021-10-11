@@ -35,7 +35,7 @@ type Speaker interface {
 	Update(i int)
 }
 
-func main() {
+func grouping() {
 	speakers := []Speaker{
 		&Dog{
 			Name:       "Fido",
