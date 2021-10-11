@@ -8,11 +8,11 @@ type Dog struct {
 	PackFactor int
 }
 
-func (d Dog) Speak() {
+func (d *Dog) Speak() {
 	fmt.Println("Woof!", "My name is", d.Name, ", it is", d.IsMammal, "I am a mammal with a pack factor of", d.PackFactor)
 }
 
-func (d Dog) Update(i int) {
+func (d *Dog) Update(i int) {
 	d.PackFactor = i
 }
 
@@ -22,11 +22,11 @@ type Cat struct {
 	ClimbFactor int
 }
 
-func (c Cat) Speak() {
+func (c *Cat) Speak() {
 	fmt.Println("Meow!", "My name is", c.Name, ", it is", c.IsMammal, "I am a mammal with a climb factor of", c.ClimbFactor)
 }
 
-func (c Cat) Update(i int) {
+func (c *Cat) Update(i int) {
 	c.ClimbFactor = i
 }
 
@@ -50,7 +50,6 @@ func main() {
 	}
 
 	for _, speaker := range speakers {
-		fmt.Printf("%T\n", speaker)
 		speaker.Update(2)
 	}
 
