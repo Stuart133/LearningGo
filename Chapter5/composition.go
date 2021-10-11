@@ -20,11 +20,6 @@ type Storer interface {
 	Store(d *Data) error
 }
 
-type PullStorer interface {
-	Puller
-	Storer
-}
-
 type Xenia struct {
 	Host    string
 	Timeout time.Duration
@@ -53,11 +48,6 @@ func (*Pillar) Store(d *Data) error {
 	return nil
 }
 
-type System struct {
-	Puller
-	Storer
-}
-
 func Pull(p Puller, data []Data) (int, error) {
 	for i := range data {
 		if err := p.Pull(&data[i]); err != nil {
@@ -78,13 +68,13 @@ func Store(s Storer, data []Data) (int, error) {
 	return len(data), nil
 }
 
-func Copy(ps PullStorer, batch int) error {
+func Copy(p Puller, s Storer, batch int) error {
 	data := make([]Data, batch)
 
 	for {
-		i, err := Pull(ps, data)
+		i, err := Pull(p, data)
 		if i > 0 {
-			if _, err := Store(ps, data[:i]); err != nil {
+			if _, err := Store(s, data[:i]); err != nil {
 				return err
 			}
 		}
@@ -97,18 +87,17 @@ func Copy(ps PullStorer, batch int) error {
 }
 
 func main() {
-	sys := System{
-		Puller: &Xenia{
-			Host:    "localhost:8000",
-			Timeout: time.Second,
-		},
-		Storer: &Pillar{
-			Host:    "localhost:9000",
-			Timeout: time.Second,
-		},
+	p := &Xenia{
+		Host:    "localhost:8000",
+		Timeout: time.Second,
 	}
 
-	if err := Copy(&sys, 3); err != io.EOF {
+	s := &Pillar{
+		Host:    "localhost:9000",
+		Timeout: time.Second,
+	}
+
+	if err := Copy(p, s, 3); err != io.EOF {
 		fmt.Println(err)
 	}
 }
