@@ -86,7 +86,7 @@ func Copy(p Puller, s Storer, batch int) error {
 
 }
 
-func main() {
+func composition() {
 	p := &Xenia{
 		Host:    "localhost:8000",
 		Timeout: time.Second,
