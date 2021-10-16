@@ -6,7 +6,7 @@ import (
 	"sync"
 )
 
-func concurrent() {
+func main() {
 	var wg sync.WaitGroup
 	wg.Add(2)
 
@@ -23,14 +23,16 @@ func concurrent() {
 	fmt.Printf("Waiting to finish\n")
 	wg.Wait()
 
-	fmt.Printf("\nTerminating program")
+	fmt.Println("\nTerminating program")
 }
 
 func lowercase() {
 	fmt.Printf("lowercase yo")
+	fmt.Printf("lowercase yo")
 }
 
 func uppercase() {
+	fmt.Printf("UPPERCASE YO")
 	fmt.Printf("UPPERCASE YO")
 }
 

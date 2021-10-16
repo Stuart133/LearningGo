@@ -8,7 +8,7 @@ import (
 	"sync"
 )
 
-func main() {
+func preemptive() {
 	var wg sync.WaitGroup
 	wg.Add(2)
 
