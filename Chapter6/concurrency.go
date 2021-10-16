@@ -6,7 +6,7 @@ import (
 	"sync"
 )
 
-func main() {
+func concurrent() {
 	var wg sync.WaitGroup
 	wg.Add(2)
 
