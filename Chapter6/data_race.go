@@ -8,7 +8,7 @@ import (
 
 var counter int
 
-func main() {
+func race() {
 	const grs = 2
 
 	var wg sync.WaitGroup
