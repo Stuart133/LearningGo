@@ -27,7 +27,9 @@ func waitForResult() {
 	fmt.Println("-----------------------------------")
 }
 
+// Be careful with backpressure from this pattern - Think about the total goroutine count
 func fanOut() {
+	// Use a buffered channel to stop individual goroutines being blocked
 	children := 2000
 	ch := make(chan string, children)
 
@@ -40,6 +42,7 @@ func fanOut() {
 		}(c)
 	}
 
+	// We use a counter to ensure all signals are received, rather than checking each individual signal
 	for children > 0 {
 		d := <-ch
 		children--
