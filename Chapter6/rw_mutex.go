@@ -10,7 +10,7 @@ import (
 var data []string
 var rwMutex sync.RWMutex
 
-func main() {
+func rwmutex() {
 	var wg sync.WaitGroup
 	wg.Add(1)
 
