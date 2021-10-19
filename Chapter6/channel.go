@@ -5,11 +5,12 @@ import (
 	"fmt"
 	"math/rand"
 	"runtime"
+	"sync"
 	"time"
 )
 
 func main() {
-	fanOutSem()
+	boundedWorkPooling()
 }
 
 func waitForResult() {
@@ -175,6 +176,35 @@ func fanOutSem() {
 		fmt.Println(d)
 		fmt.Println("parent : recv'd signal :", children)
 	}
+
+	time.Sleep(time.Second)
+	fmt.Println("-----------------------------------")
+}
+
+func boundedWorkPooling() {
+	work := []string{"paper", "paper", "paper", 2000: "paper"}
+
+	g := runtime.GOMAXPROCS(0)
+	var wg sync.WaitGroup
+	wg.Add(g)
+
+	ch := make(chan string, g)
+
+	for c := 0; c < g; c++ {
+		go func(child int) {
+			defer wg.Done()
+			for wrk := range ch {
+				fmt.Printf("child %d : recv'd signal : %s\n", child, wrk)
+			}
+			fmt.Printf("child %d : recv'd shutdown signal\n", child)
+		}(c)
+	}
+
+	for _, wrk := range work {
+		ch <- wrk
+	}
+	close(ch)
+	wg.Wait()
 
 	time.Sleep(time.Second)
 	fmt.Println("-----------------------------------")
