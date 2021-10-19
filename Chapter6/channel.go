@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"math/rand"
 	"runtime"
@@ -8,7 +9,7 @@ import (
 )
 
 func main() {
-	drop()
+	cancel()
 }
 
 func waitForResult() {
@@ -109,8 +110,10 @@ func drop() {
 	const work = 2000
 	for w := 0; w < work; w++ {
 		select {
+		// If the channel has space we send the data
 		case ch <- "data":
 			fmt.Println("parent : sent signal :", w)
+		// If not we end up in the default block
 		default:
 			fmt.Println("parent : dropped data :", w)
 		}
@@ -118,6 +121,29 @@ func drop() {
 
 	close(ch)
 	fmt.Println("parent : sent shutdown signal")
+
+	time.Sleep(time.Second)
+	fmt.Println("-----------------------------------")
+}
+
+func cancel() {
+	duration := 10 * time.Millisecond
+	ctx, cancel := context.WithTimeout(context.Background(), duration)
+	defer cancel()
+
+	ch := make(chan string, 1)
+
+	go func() {
+		time.Sleep(time.Duration(rand.Intn(200)) * time.Millisecond)
+		ch <- "data"
+	}()
+
+	select {
+	case d := <-ch:
+		fmt.Println("work complete", d)
+	case <-ctx.Done():
+		fmt.Println("work cancelled")
+	}
 
 	time.Sleep(time.Second)
 	fmt.Println("-----------------------------------")
