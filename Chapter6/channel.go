@@ -3,12 +3,12 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"runtime"
 	"time"
 )
 
 func main() {
-	waitForResult()
-	fanOut()
+	pooling()
 }
 
 func waitForResult() {
@@ -49,6 +49,48 @@ func fanOut() {
 		fmt.Println(d)
 		fmt.Println("parent : recv'd signal :", children)
 	}
+
+	time.Sleep(time.Second)
+	fmt.Println("-----------------------------------")
+}
+
+func waitForTask() {
+	ch := make(chan string)
+
+	go func() {
+		d := <-ch
+		fmt.Println("child : recv'd signal :", d)
+	}()
+
+	time.Sleep(time.Duration(rand.Intn(500)) * time.Millisecond)
+	ch <- "data"
+	fmt.Println("parent : sent signal")
+
+	time.Sleep(time.Second)
+	fmt.Println("-----------------------------------")
+}
+
+func pooling() {
+	ch := make(chan string)
+
+	g := runtime.GOMAXPROCS(0)
+	for c := 0; c < g; c++ {
+		go func(child int) {
+			for d := range ch {
+				fmt.Printf("child %d : recv'd signal : %s\n", child, d)
+			}
+			fmt.Printf("child %d : recv'd shutdown signal\n", child)
+		}(c)
+	}
+
+	const work = 100
+	for w := 0; w < work; w++ {
+		ch <- "data"
+		fmt.Println("parent : sent signal : ", w)
+	}
+
+	close(ch)
+	fmt.Println("parent : sent shutdown signal")
 
 	time.Sleep(time.Second)
 	fmt.Println("-----------------------------------")
