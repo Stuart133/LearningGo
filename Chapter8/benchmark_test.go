@@ -6,7 +6,6 @@ import (
 )
 
 var gs string
-var a []int
 
 func BenchmarkSprint(b *testing.B) {
 	b.Run("None", benchmarkSprint)
@@ -16,13 +15,8 @@ func BenchmarkSprint(b *testing.B) {
 func benchmarkSprint(b *testing.B) {
 	var s string
 
-	a = append(a, b.N)
 	for i := 0; i < b.N; i++ {
 		s = fmt.Sprint("hello")
-	}
-
-	if len(a) > 4 {
-		// fmt.Println(a)
 	}
 
 	gs = s
